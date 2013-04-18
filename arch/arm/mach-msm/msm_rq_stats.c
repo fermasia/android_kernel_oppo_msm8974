@@ -41,6 +41,7 @@ static bool load_stats_enabled = true;
 
 struct notifier_block freq_transition;
 struct notifier_block cpu_hotplug;
+struct notifier_block freq_policy;
 
 struct cpu_load_data {
 	cputime64_t prev_cpu_idle;
@@ -252,6 +253,7 @@ static int system_suspend_handler(struct notifier_block *nb,
 	}
 	return NOTIFY_OK;
 }
+
 
 void enable_rq_load_calc(bool on)
 {
@@ -502,11 +504,19 @@ static int __init msm_rq_stats_init(void)
 	freq_transition.notifier_call = cpufreq_transition_handler;
 	cpu_hotplug.notifier_call = cpu_hotplug_handler;
 
+
 	if (load_stats_enabled){
 		cpufreq_register_notifier(&freq_transition,
 					CPUFREQ_TRANSITION_NOTIFIER);
 		register_hotcpu_notifier(&cpu_hotplug);
 	}
+
+	freq_policy.notifier_call = freq_policy_handler;
+	cpufreq_register_notifier(&freq_transition,
+					CPUFREQ_TRANSITION_NOTIFIER);
+	register_hotcpu_notifier(&cpu_hotplug);
+	cpufreq_register_notifier(&freq_policy,
+					CPUFREQ_POLICY_NOTIFIER);
 
 	return ret;
 }
