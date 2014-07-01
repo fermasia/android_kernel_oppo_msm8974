@@ -74,3 +74,4 @@ obj-$(CONFIG_UID_CPUTIME) 	+= uid_cputime.o
 #OPPO 2013-02-21 yuyi add begin for breath led
 obj-$(CONFIG_SN3193_SLED)  += shineled/
 #OPPO 2013-02-21 yuyi add end
+obj-y				+= sound_control.o
