@@ -49,6 +49,9 @@
 #include <linux/boot_mode.h>
 #include <linux/uaccess.h>//sjc20150105
 #endif
+#ifdef CONFIG_FORCE_FAST_CHARGE
+#include <linux/fastchg.h>
+#endif
 
 #ifdef CONFIG_CHARGE_LEVEL
 #include "linux/charge_level.h"
