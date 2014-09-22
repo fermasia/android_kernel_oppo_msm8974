@@ -525,7 +525,7 @@ static int cpufreq_parse_dt(struct device *dev)
 	if (!dts_freq_table)
 		return ERR_PTR(-ENOMEM);
 
-	dts_freq_table = *ftbl;
+	*dts_freq_table = *ftbl;
 
 	for (i = 0; i < nf; i++)
 		dts_freq_table[i].frequency = data[i];
