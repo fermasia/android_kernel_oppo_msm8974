@@ -431,7 +431,7 @@ static struct cpufreq_driver msm_cpufreq_driver = {
 #define PROP_TBL "qcom,cpufreq-table"
 static int cpufreq_parse_dt(struct device *dev)
 {
-	int ret, len, nf, num_cols = 2, i, j;
+	int ret, len, nf, num_cols = 2, i;
 	u32 *data;
 
 	if (l2_clk)
@@ -525,7 +525,7 @@ static int cpufreq_parse_dt(struct device *dev)
 	if (!dts_freq_table)
 		return ERR_PTR(-ENOMEM);
 
-	dts_freq_table = *ftbl;
+	*dts_freq_table = *ftbl;
 
 	for (i = 0; i < nf; i++)
 		dts_freq_table[i].frequency = data[i];
