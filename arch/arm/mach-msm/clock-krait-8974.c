@@ -39,6 +39,10 @@
 int pvs_level = -1;
 module_param(pvs_level, int, S_IRUGO); 
 #endif
+#ifdef CONFIG_SPEED_LEVEL_INTERFACE
+int speed_level = -1;
+module_param(speed_level, int, S_IRUGO);
+#endif
 
 /* Clock inputs coming into Krait subsystem */
 DEFINE_FIXED_DIV_CLK(hfpll_src_clk, 1, NULL);
@@ -471,6 +475,34 @@ static void get_krait_bin_format_b(struct platform_device *pdev,
 		*speed = 0;
 	}
 
+
+#ifdef CONFIG_PVS_LEVEL_INTERFACE
+        speed_level = *speed;
+#endif
+
+	/* Check SVS PVS bin */
+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "efuse_svs");
+	if (res) {
+		base_svs = devm_ioremap(&pdev->dev, res->start,
+					resource_size(res));
+		/* Read the svs pvs value if status bit 28 is valid (set) */
+		if (!base_svs) {
+			*svs_pvs = 0;
+			dev_warn(&pdev->dev,
+			 "Unable to read svs efuse data. Defaulting to 0!\n");
+		} else {
+			pte_efuse = readl_relaxed(base_svs);
+			/*
+			 * Read the svs pvs value if status bit 28 is valid
+			 * 4 bits of SVS PVS are in efuse register bits 27-24
+			 */
+			if (pte_efuse & BIT(28))
+				*svs_pvs = (pte_efuse >> 24) & 0xF;
+
+			devm_iounmap(&pdev->dev, base_svs);
+		}
+	}
+
 	/* Check PVS_BLOW_STATUS */
 	pte_efuse = readl_relaxed(base + 0x4) & BIT(21);
 	if (pte_efuse) {
@@ -687,19 +719,11 @@ static int clock_krait_8974_driver_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct clk *c;
-<<<<<<< HEAD
-	int speed = 0, pvs = 0, pvs_ver = 0, config_ver = 0, rows = 0, cpu = 0;
-	unsigned long *freq = 0, cur_rate, aux_rate = 0;
-	int *uv = 0, *ua = 0;
-	u32 *dscr = 0, vco_mask = 0, config_val = 0;
-	int ret = 0;
-=======
 	int speed, pvs, svs_pvs, pvs_ver, config_ver, rows, cpu, svs_row = 0;
 	unsigned long *freq = 0, *svs_freq = 0, cur_rate, aux_rate;
 	int *uv = 0, *ua = 0, *svs_uv = 0, *svs_ua = 0;
 	u32 *dscr = 0, vco_mask, config_val, svs_fmax;
 	int ret;
->>>>>>> 5cd2527... toolchain: gcc: squashed fixes related to optimized toolchain
 
 	vdd_l2.regulator[0] = devm_regulator_get(dev, "l2-dig");
 	if (IS_ERR(vdd_l2.regulator[0])) {
