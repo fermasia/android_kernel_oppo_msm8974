@@ -1,0 +1,4 @@
+ui_print("Installing Kernel");
+package_extract_file("boot.img", "/dev/block/platform/msm_sdcc.1/by-name/boot");
+ui_print("Done");
+set_progress(1.000000);
