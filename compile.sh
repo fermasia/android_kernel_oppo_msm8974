@@ -16,6 +16,7 @@ if [[ $DEFCONF =~ ^[YySs]$ ]]
 then
 	make ARCH=arm CROSS_COMPILE=$TOOLCHAIN/arm-eabi- msm8974_find7_defconfig
 	
+fi
 
 echo    # (optional) move to a new line
 make ARCH=arm CROSS_COMPILE=$TOOLCHAIN/arm-eabi- -j$JOBS
