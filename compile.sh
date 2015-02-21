@@ -1,5 +1,5 @@
 #!/bin/bash
-TOOLCHAIN="/home/nando/dev/toolchains/sabermodnew/bin"
+TOOLCHAIN="/home/nando/dev/toolchains/sabermod49/bin"
 CLEAN=$1
 DEFCONF=$2
 JOBS=$3
@@ -14,7 +14,7 @@ fi
 echo    # (optional) move to a new line
 if [[ $DEFCONF =~ ^[YySs]$ ]]
 then
-	make ARCH=arm CROSS_COMPILE=$TOOLCHAIN/arm-eabi- msm8974_find7_defconfig
+	make ARCH=arm CROSS_COMPILE=$TOOLCHAIN/arm-eabi- msm8974_find7op_defconfig
 	
 fi
 
