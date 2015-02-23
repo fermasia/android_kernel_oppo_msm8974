@@ -32,7 +32,7 @@ lut_data->green = (lut_data->green < lut_data->minimum) ?
 lut_data->minimum : lut_data->green;
 lut_data->blue = (lut_data->blue < lut_data->minimum) ?
 lut_data->minimum : lut_data->blue;
-mdss_mdp_pp_kcal_update(lut_data->red, lut_data->green, lut_data->blue);
+mdss_mdp_pp_kcal_update(lut_data);
 }
 static ssize_t kcal_store(struct device *dev, struct device_attribute *attr,
 const char *buf, size_t count)
@@ -94,7 +94,7 @@ return -EINVAL;
 if (lut_data->enable == kcal_enable)
 return -EINVAL;
 lut_data->enable = kcal_enable;
-mdss_mdp_pp_kcal_enable(lut_data->enable ? true : false);
+mdss_mdp_pp_kcal_update(lut_data);
 return count;
 }
 static ssize_t kcal_enable_show(struct device *dev,
@@ -116,7 +116,7 @@ return -EINVAL;
 if (lut_data->invert == kcal_invert)
 return -EINVAL;
 lut_data->invert = kcal_invert;
-mdss_mdp_pp_kcal_invert(lut_data->invert);
+mdss_mdp_pp_kcal_invert(lut_data);
 return count;
 }
 static ssize_t kcal_invert_show(struct device *dev,
@@ -223,8 +223,6 @@ pr_err("%s: failed to allocate memory for lut_data\n",
 __func__);
 return -ENOMEM;
 }
-mdss_mdp_pp_kcal_enable(true);
-mdss_mdp_pp_kcal_update(NUM_QLUT, NUM_QLUT, NUM_QLUT);
 lut_data->red = lut_data->green = lut_data->blue = NUM_QLUT;
 lut_data->minimum = 35;
 lut_data->enable = 1;
