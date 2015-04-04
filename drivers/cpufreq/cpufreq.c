@@ -414,6 +414,8 @@ show_one(cpuinfo_transition_latency, cpuinfo.transition_latency);
 show_one(scaling_min_freq, min);
 show_one(scaling_max_freq, max);
 show_one(cpu_utilization, util);
+show_one(policy_min_freq, user_policy.min);
+show_one(policy_max_freq, user_policy.max);
 
 static ssize_t show_scaling_cur_freq(
 	struct cpufreq_policy *policy, char *buf)
@@ -661,6 +663,8 @@ cpufreq_freq_attr_rw(UV_mV_table);
 cpufreq_freq_attr_rw(scaling_max_freq);
 cpufreq_freq_attr_rw(scaling_governor);
 cpufreq_freq_attr_rw(scaling_setspeed);
+cpufreq_freq_attr_ro(policy_min_freq);
+cpufreq_freq_attr_ro(policy_max_freq);
 
 static struct attribute *default_attrs[] = {
 	&cpuinfo_min_freq.attr,
@@ -678,6 +682,8 @@ static struct attribute *default_attrs[] = {
 #ifdef CONFIG_CPU_VOLTAGE_TABLE
 	&UV_mV_table.attr,
 #endif
+	&policy_min_freq.attr,
+	&policy_max_freq.attr,
 	NULL
 };
 
