@@ -108,12 +108,6 @@ static void remove_down_lock(struct work_struct *work)
 	dl->locked = 0;
 }
 
-static int check_down_lock(unsigned int cpu)
-{
-	struct down_lock *dl = &per_cpu(lock_info, cpu);
-	return dl->locked;
-}
-
 extern unsigned int get_rq_info(void);
 
 unsigned int state = MSM_MPDEC_DISABLED;
@@ -221,18 +215,15 @@ static void __ref bricked_hotplug_work(struct work_struct *work) {
 	case MSM_MPDEC_DOWN:
 		cpu = get_slowest_cpu();
 		if (cpu > 0) {
-			if (cpu_online(cpu) && !check_cpuboost(cpu)
-					&& !check_down_lock(cpu))
+			if (cpu_online(cpu))
 				cpu_down(cpu);
 		}
 		break;
 	case MSM_MPDEC_UP:
 		cpu = cpumask_next_zero(0, cpu_online_mask);
 		if (cpu < DEFAULT_MAX_CPUS_ONLINE) {
-			if (!cpu_online(cpu)) {
+			if (!cpu_online(cpu))
 				cpu_up(cpu);
-				apply_down_lock(cpu);
-			}
 		}
 		break;
 	default:
@@ -240,7 +231,6 @@ static void __ref bricked_hotplug_work(struct work_struct *work) {
 			__func__, state);
 	}
 	mutex_unlock(&hotplug.bricked_cpu_mutex);
-
 out:
 	if (hotplug.bricked_enabled)
 		queue_delayed_work(hotplug_wq, &hotplug_work,
