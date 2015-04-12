@@ -32,6 +32,9 @@
 #define DT_CMD_HDR 6
 
 #define MIN_REFRESH_RATE 30
+#ifdef CONFIG_POWERSUSPEND
+#include <linux/powersuspend.h>
+#endif
 
 DEFINE_LED_TRIGGER(bl_led_trigger);
 
@@ -815,6 +818,10 @@ static int mdss_dsi_panel_on(struct mdss_panel_data *pdata)
 		return -EINVAL;
 	}
 
+#ifdef CONFIG_POWERSUSPEND
+        set_power_suspend_state_panel_hook(POWER_SUSPEND_INACTIVE);
+#endif
+
 	ctrl = container_of(pdata, struct mdss_dsi_ctrl_pdata,
 				panel_data);
 	mipi  = &pdata->panel_info.mipi;
@@ -854,6 +861,10 @@ static int mdss_dsi_panel_off(struct mdss_panel_data *pdata)
 
 	if (ctrl->off_cmds.cmd_cnt)
 		mdss_dsi_panel_cmds_send(ctrl, &ctrl->off_cmds);
+
+#ifdef CONFIG_POWERSUSPEND
+        set_power_suspend_state_panel_hook(POWER_SUSPEND_ACTIVE);
+#endif
 
 	pr_debug("%s:-\n", __func__);
 	return 0;
@@ -1068,7 +1079,7 @@ static int mdss_dsi_parse_fbc_params(struct device_node *np,
 	fbc_enabled = of_property_read_bool(np,	"qcom,mdss-dsi-fbc-enable");
 	if (fbc_enabled) {
 		pr_debug("%s:%d FBC panel enabled.\n", __func__, __LINE__);
-		panel_info->fbc.enabled = 1;
+			panel_info->fbc.enabled = 1;
 		rc = of_property_read_u32(np, "qcom,mdss-dsi-fbc-bpp", &tmp);
 		panel_info->fbc.target_bpp =	(!rc ? tmp : panel_info->bpp);
 		rc = of_property_read_u32(np, "qcom,mdss-dsi-fbc-packing",
