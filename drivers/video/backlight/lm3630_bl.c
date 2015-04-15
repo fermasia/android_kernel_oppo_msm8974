@@ -413,6 +413,49 @@ int lm3630_bank_a_update_status(u32 bl_level)
 	int ret;
 	struct lm3630_chip_data *pchip = lm3630_pchip;
 	pr_debug("%s: bl=%d\n", __func__,bl_level);
+	
+#ifdef CONFIG_BACKLIGHT_EXT_CONTROL
+	// if display is switched off
+	if (bl_level == 0) 
+	{
+		// write status to external var for further usage
+		backlight_on = false;
+
+		// Add external function calls here...
+
+#ifdef CONFIG_CPU_FREQ_GOV_ZZMOOVE
+		// if zzmoove governor is defined call external suspend function
+		zzmoove_suspend();
+#endif
+
+	}
+
+	// if display is switched on
+	if (bl_level != 0 && pre_brightness == 0) 
+	{
+		// write status to external var for further usage
+		backlight_on = true;
+
+		// Add external function calls here...
+#ifdef CONFIG_DYNAMIC_FSYNC
+		// if dynamic fsync is defined call external resume function
+		dyn_fsync_resume();
+#endif
+#ifdef CONFIG_CPU_FREQ_GOV_ZZMOOVE
+		// if zzmoove governor is defined call external resume function
+		zzmoove_resume();
+#endif
+	}
+#endif
+	
+#ifdef VENDOR_EDIT
+
+/* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/04/28  Add for add log for 14001 black screen */
+		if(pre_brightness == 0)
+			{pr_err("%s set brightness :  %d \n",__func__,bl_level);}
+		pre_brightness=bl_level;
+#endif /*VENDOR_EDIT*/
+>>>>>>> 3446d31... cpufreq: Add zzmoove governor v1.0 beta1
 
 	if(!pchip){
 		dev_err(pchip->dev, "lm3630_bank_a_update_status pchip is null\n");
