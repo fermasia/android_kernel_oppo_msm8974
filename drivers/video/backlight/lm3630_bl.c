@@ -31,6 +31,9 @@
 #ifdef CONFIG_VENDOR_EDIT
 #include <linux/boot_mode.h>
 #endif //CONFIG_VENDOR_EDIT
+#ifdef CONFIG_STATE_NOTIFIER
+#include <linux/state_notifier.h>
+#endif
 #define REG_CTRL	0x00
 #define REG_CONFIG	0x01
 #define REG_BRT_A	0x03
@@ -449,6 +452,16 @@ int lm3630_bank_a_update_status(u32 bl_level)
 #endif
 	
 #ifdef VENDOR_EDIT
+
+#ifdef CONFIG_STATE_NOTIFIER
+	// if display is switched off
+	if (!use_fb_notifier && bl_level == 0)
+		state_notifier_call_chain(STATE_NOTIFIER_SUSPEND, NULL);
+
+	// if display is switched on
+	if (!use_fb_notifier && bl_level != 0 && pre_brightness == 0)
+		state_notifier_call_chain(STATE_NOTIFIER_ACTIVE, NULL);
+#endif
 
 /* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/04/28  Add for add log for 14001 black screen */
 		if(pre_brightness == 0)
