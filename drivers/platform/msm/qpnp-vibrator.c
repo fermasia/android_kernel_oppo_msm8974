@@ -167,11 +167,7 @@ static void qpnp_vib_enable(struct timed_output_dev *dev, int value)
 	if (value == 0)
 		vib->state = 0;
 	else {
-#ifdef CONFIG_OPPO_DEVICE_N3
-//Zhilong.Zhang@OnlineRd.Driver, 2014/10/23, Add for improve the effect of motor vibration
-		if (value < 50 && value > 0)
-			value += 10;
-#endif		
+
 		value = (value > vib->timeout ?
 				 vib->timeout : value);
 		vib->state = 1;
