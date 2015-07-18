@@ -5082,7 +5082,7 @@ static void synaptics_rmi4_late_resume(struct early_suspend *h)
 		synaptics_rmi4_resume(&(rmi4_data->input_dev->dev));
 
 	if (rmi4_data->sensor_sleep == true) {
-		synaptics_rmi4_sensor_wake(rmi4_data);
+		atomic_set(&rmi4_data->sensor_awake, 1);
 		synaptics_rmi4_irq_enable(rmi4_data, true);
 		rmi4_data->touch_stopped = false;
 		retval = synaptics_rmi4_reinit_device(rmi4_data);
