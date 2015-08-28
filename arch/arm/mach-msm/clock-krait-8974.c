@@ -612,7 +612,11 @@ module_param(pvs_config_ver, uint, S_IRUGO);
 
 #ifdef CONFIG_CPU_VOLTAGE_TABLE
 
+<<<<<<< HEAD
 #define CPU_VDD_MIN	 600
+=======
+#define CPU_VDD_MIN	 475
+>>>>>>> 7f76089... Voltage Control: added voltage control for DTS based kernels
 #define CPU_VDD_MAX	1450
 
 extern bool is_used_by_scaling(unsigned int freq);
@@ -684,7 +688,7 @@ ssize_t store_UV_mV_table(struct cpufreq_policy *policy, char *buf,
 		cnt = strlen(size_cur);
 		buf += cnt + 1;
 	}
-	pr_warn("faux123: user voltage table modified!\n");
+	pr_info("krait: regulator: user voltage table modified!\n");
 
 	return ret;
 }
