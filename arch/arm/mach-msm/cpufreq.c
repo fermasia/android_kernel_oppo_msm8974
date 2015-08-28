@@ -526,9 +526,8 @@ static int cpufreq_parse_dt(struct device *dev)
 		return -ENOMEM;
 
 	*dts_freq_table = *freq_table;
-
-	for (i = 0; i < nf; i++)
-		dts_freq_table[i].frequency = data[i];
+	for (i = 0, j = 0; i < nf; i++, j += 3)
+		dts_freq_table[i].frequency = data[j];
 	dts_freq_table[i].frequency = CPUFREQ_TABLE_END;
 #endif
 
@@ -552,7 +551,6 @@ bool is_used_by_scaling(unsigned int freq)
 	return false;
 }
 #endif
-
 
 #ifdef CONFIG_DEBUG_FS
 static int msm_cpufreq_show(struct seq_file *m, void *unused)
