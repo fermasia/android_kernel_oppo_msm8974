@@ -6598,7 +6598,11 @@ static int handle_batt_temp_normal(struct qpnp_chg_chip *chip)
 				if(chip->aicl_current == 0) {
 					soft_aicl(chip);
 				} else {
-					if(chip->aicl_current == 2000) {
+					if (chip->aicl_current >= 1500) {
+#ifdef CONFIG_MACH_MSM8974_14001
+/* OPPO 2014-06-03 sjc Modify for Find7op temp rising problem */
+						qpnp_chg_iusbmax_set(chip, chip->max_bat_chg_current);
+#else
 						qpnp_chg_iusbmax_set(chip, 1500);
 					} else {
 						qpnp_chg_iusbmax_set(chip, chip->aicl_current);
