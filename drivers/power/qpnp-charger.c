@@ -6175,7 +6175,6 @@ static int soft_aicl(struct qpnp_chg_chip *chip)
 		chg_vol = get_prop_charger_voltage_now(chip);
 		if(chg_vol < SOFT_AICL_VOL) {
 			qpnp_chg_iusbmax_set(chip, 500);
-			qpnp_chg_iusbmax_set(chip, 500);//set 2 times
 			chip->aicl_current = 500;
 			return 0;
 		}
@@ -6185,7 +6184,6 @@ static int soft_aicl(struct qpnp_chg_chip *chip)
 	for(i = 0; i < MAX_COUNT; i++) {
 		chg_vol = get_prop_charger_voltage_now(chip);
 		if(chg_vol < SOFT_AICL_VOL) {
-			qpnp_chg_iusbmax_set(chip, 900);
 			qpnp_chg_iusbmax_set(chip, 900);
 			chip->aicl_current = 900;
 			qpnp_chg_vinmin_set(chip, chip->min_voltage_mv + 280);///4.68V sjc0401 add for improving current noise (bq24196 hardware bug)
@@ -6197,15 +6195,21 @@ static int soft_aicl(struct qpnp_chg_chip *chip)
 	for(i = 0; i < MAX_COUNT; i++) {
 		chg_vol = get_prop_charger_voltage_now(chip);
 		if(chg_vol < SOFT_AICL_VOL) {
+#ifdef CONFIG_MACH_MSM8974_14001
+			qpnp_chg_iusbmax_set(chip, 1200);
+#else
 			qpnp_chg_iusbmax_set(chip, 1500);
-			qpnp_chg_iusbmax_set(chip, 1500);
+#endif
 			chip->aicl_current = 1500;
 			qpnp_chg_vinmin_set(chip, chip->min_voltage_mv + 280);///4.68V sjc0401 add for improving current noise (bq24196 hardware bug)
 			return 0;
 		}
 	}
+#ifdef CONFIG_MACH_MSM8974_14001
+	qpnp_chg_iusbmax_set(chip, 1200);
+#else
 	qpnp_chg_iusbmax_set(chip, 1500);
-	qpnp_chg_iusbmax_set(chip, 1500);
+#endif
 	chip->aicl_current = 2000;
 	return 0;
 }
