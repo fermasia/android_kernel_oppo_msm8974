@@ -51,7 +51,6 @@ static DEFINE_SPINLOCK(cpufreq_driver_lock);
 
 static struct kset *cpufreq_kset;
 static struct kset *cpudev_kset;
-static unsigned int min_freq_hardlimit = 0;
 static unsigned int min_freq_hardlimit[4] = {0, 0, 0, 0};
 static unsigned int max_freq_hardlimit[4] = {0, 0, 0, 0};
 #define GOVERNOR_NAME_MAX	16
