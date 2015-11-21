@@ -455,7 +455,6 @@ int lm3630_bank_a_update_status(u32 bl_level)
 			{pr_err("%s set brightness :  %d \n",__func__,bl_level);}
 		pre_brightness=bl_level;
 #endif /*VENDOR_EDIT*/
->>>>>>> 3446d31... cpufreq: Add zzmoove governor v1.0 beta1
 
 	if(!pchip){
 		dev_err(pchip->dev, "lm3630_bank_a_update_status pchip is null\n");
