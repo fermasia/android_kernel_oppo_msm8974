@@ -1,5 +1,5 @@
 #!/bin/bash
-TOOLCHAIN="/home/nando/dev/toolchains/uber49/bin"
+TOOLCHAIN="/home/nando/dev/toolchains/sabermod49neon/bin"
 JOBS="-j$(grep -c ^processor /proc/cpuinfo)"
 echo "Cleaning old files"
 rm -f ../AnykernelOMNI/dtb
