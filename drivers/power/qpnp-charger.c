@@ -6119,6 +6119,7 @@ static void qpnp_battery_status_set(struct qpnp_chg_chip *chip,
 static int qpnp_charger_type_get(struct qpnp_chg_chip *chip)
 {
 	union power_supply_propval ret = {0,};
+#endif /*CONFIG_VENDOR_EDIT*/
 	
 #ifndef CONFIG_VENDOR_EDIT
 /* jingchun.wang@Onlinerd.Driver, 2013/12/30  Modify for avoid race condition */
