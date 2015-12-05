@@ -4,6 +4,7 @@ JOBS="-j$(grep -c ^processor /proc/cpuinfo)"
 echo "Cleaning old files"
 rm -f ../AnykernelOMNI/dtb
 rm -f ../AnykernelOMNI/zImage
+rm -f ../AnykernelOMNI/modules/wlan.ko
 echo "Making kernel"
 DATE_START=$(date +"%s")
 
@@ -22,6 +23,7 @@ echo "Build completed in $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 
 ../ramdisk_one_plus_one/dtbToolCM -2 -o ../AnykernelOMNI/dtb -s 2048 -p ../omni/scripts/dtc/ ../omni/arch/arm/boot/
 cp arch/arm/boot/zImage ../AnykernelOMNI/zImage
+cp drivers/staging/prima/wlan.ko ../AnykernelOMNI/modules/wlan.ko
 cd ../AnykernelOMNI/
 zipfile="DONKEY-V"$1".zip"
 zip -r -9 $zipfile *
