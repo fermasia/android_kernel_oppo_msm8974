@@ -245,8 +245,8 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 
 HOSTCC       = gcc
 HOSTCXX      = g++
-HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -pipe -fgcse-las -std=gnu89
-HOSTCXXFLAGS = -O2 -pipe -fgcse-las -std=gnu89
+HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -pipe -fgcse-las -std=gnu89 -fopenmp -fgraphite -fgraphite-identity
+HOSTCXXFLAGS = -O2 -pipe -fgcse-las -std=gnu89 -fopenmp -fgraphite -fgraphite-identity
 
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
@@ -329,7 +329,7 @@ include $(srctree)/scripts/Kbuild.include
 # Make variables (CC, etc...)
 
 AS		= $(CROSS_COMPILE)as
-LD		= $(CROSS_COMPILE)ld
+LD		= $(CROSS_COMPILE)ld.gold
 REAL_CC		= $(CROSS_COMPILE)gcc
 CPP		= $(CC) -E
 AR		= $(CROSS_COMPILE)ar
@@ -375,6 +375,7 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-delete-null-pointer-checks \
 		   -mcpu=cortex-a15 -mtune=cortex-a15 -mfpu=neon-vfpv4 -marm \
 		   -ffast-math -fsingle-precision-constant \
+           -fopenmp -fgraphite -fgraphite-identity -fsanitize=leak\
 		   -fgcse-lm -fgcse-sm -fsched-spec-load -fforce-addr
 
 
