@@ -44,6 +44,22 @@
 #define EBI0_PAGE_OFFSET PAGE_OFFSET
 #define EBI0_SIZE 0x10000000
 
+#if defined(CONFIG_KEXEC_HARDBOOT)
+#if defined(CONFIG_MACH_APQ8064_FLO)
+#define KEXEC_HB_PAGE_ADDR		UL(0x88C00000)
+#elif defined(CONFIG_MACH_APQ8064_MAKO)
+#define KEXEC_HB_PAGE_ADDR		UL(0x88600000)
+#elif defined(CONFIG_MACH_MSM8974_HAMMERHEAD)
+#define KEXEC_HB_PAGE_ADDR		UL(0x10100000)
+#define KEXEC_HB_KERNEL_LOC		UL(0x3208000)
+#elif defined(CONFIG_MACH_OPPO_MSM8974)
+#define KEXEC_HB_PAGE_ADDR		UL(0x2F600000)
+#define KEXEC_HB_KERNEL_LOC		UL(0x22000000)
+#else
+#error "Adress for kexec hardboot page not defined"
+#endif
+#endif
+
 #ifndef __ASSEMBLY__
 
 extern unsigned long ebi1_phys_offset;
