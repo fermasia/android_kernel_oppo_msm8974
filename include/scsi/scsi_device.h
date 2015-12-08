@@ -157,6 +157,7 @@ struct scsi_device {
 #endif /* VENDOR_EDIT */
 	unsigned is_visible:1;	/* is the device visible in sysfs */
 	unsigned use_rpm_auto:1; /* Enable runtime PM auto suspend */
+	unsigned broken_fua:1;		/* Don't set FUA bit */
 
 #define SCSI_DEFAULT_AUTOSUSPEND_DELAY  -1
 	int autosuspend_delay;
