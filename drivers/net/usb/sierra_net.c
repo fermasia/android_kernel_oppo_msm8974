@@ -484,7 +484,8 @@ static void sierra_net_kevent(struct work_struct *work)
 			netdev_err(dev->net,
 				"usb_control_msg failed, status %d\n", len);
 		} else {
-			struct hip_hdr	hh;
+			struct hip_hdr hh;
+			hh.extmsgid.word = 0;
 
 			dev_dbg(&dev->udev->dev, "%s: Received status message,"
 				" %04x bytes", __func__, len);
@@ -678,7 +679,7 @@ static int sierra_net_get_fw_attr(struct usbnet *dev, u16 *datap)
 		return -EIO;
 	}
 
-	*datap = *attrdata;
+	*datap = le16_to_cpu(*attrdata);
 
 	kfree(attrdata);
 	return result;
@@ -845,8 +846,9 @@ static struct sk_buff *sierra_net_skb_clone(struct usbnet *dev,
 static int sierra_net_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
 {
 	int err;
-	struct hip_hdr  hh;
+	struct hip_hdr hh;
 	struct sk_buff *new_skb;
+	hh.extmsgid.word = 0;
 
 	dev_dbg(&dev->udev->dev, "%s", __func__);
 
@@ -946,7 +948,7 @@ struct sk_buff *sierra_net_tx_fixup(struct usbnet *dev, struct sk_buff *skb,
 }
 
 static const u8 sierra_net_ifnum_list[] = { 7, 10, 11 };
-static const struct sierra_net_info_data sierra_net_info_data_68A3 = {
+static const struct sierra_net_info_data sierra_net_info_data_direct_ip = {
 	.rx_urb_size = 8 * 1024,
 	.whitelist = {
 		.infolen = ARRAY_SIZE(sierra_net_ifnum_list),
@@ -954,7 +956,7 @@ static const struct sierra_net_info_data sierra_net_info_data_68A3 = {
 	}
 };
 
-static const struct driver_info sierra_net_info_68A3 = {
+static const struct driver_info sierra_net_info_direct_ip = {
 	.description = "Sierra Wireless USB-to-WWAN Modem",
 	.flags = FLAG_WWAN | FLAG_SEND_ZLP,
 	.bind = sierra_net_bind,
@@ -962,12 +964,18 @@ static const struct driver_info sierra_net_info_68A3 = {
 	.status = sierra_net_status,
 	.rx_fixup = sierra_net_rx_fixup,
 	.tx_fixup = sierra_net_tx_fixup,
-	.data = (unsigned long)&sierra_net_info_data_68A3,
+	.data = (unsigned long)&sierra_net_info_data_direct_ip,
 };
 
 static const struct usb_device_id products[] = {
 	{USB_DEVICE(0x1199, 0x68A3), /* Sierra Wireless USB-to-WWAN modem */
-	.driver_info = (unsigned long) &sierra_net_info_68A3},
+	.driver_info = (unsigned long) &sierra_net_info_direct_ip},
+	{USB_DEVICE(0x0F3D, 0x68A3), /* AT&T Direct IP modem */
+	.driver_info = (unsigned long) &sierra_net_info_direct_ip},
+	{USB_DEVICE(0x1199, 0x68AA), /* Sierra Wireless Direct IP LTE modem */
+	.driver_info = (unsigned long) &sierra_net_info_direct_ip},
+	{USB_DEVICE(0x0F3D, 0x68AA), /* AT&T Direct IP LTE modem */
+	.driver_info = (unsigned long) &sierra_net_info_direct_ip},
 
 	{}, /* last item */
 };
