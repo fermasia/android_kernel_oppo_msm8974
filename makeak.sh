@@ -1,5 +1,5 @@
 #!/bin/bash
-TOOLCHAIN="/home/nando/dev/toolchains/linaro49a15/bin"
+TOOLCHAIN="/home/nando/dev/toolchains/uber49b/bin"
 JOBS="-j$(grep -c ^processor /proc/cpuinfo)"
 echo "Cleaning old files"
 rm -f ../AnykernelOMNI/dtb
@@ -12,8 +12,8 @@ make clean && make mrproper
 
 export ARCH=arm
 export SUBARCH=arm
-make CROSS_COMPILE=$TOOLCHAIN/arm-cortex_a15-linux-gnueabihf- msm8974_find7op_defconfig
-make CROSS_COMPILE=$TOOLCHAIN/arm-cortex_a15-linux-gnueabihf- $JOBS
+make CROSS_COMPILE=$TOOLCHAIN/arm-eabi- msm8974_find7op_defconfig
+make CROSS_COMPILE=$TOOLCHAIN/arm-eabi- $JOBS
 echo "End of compiling kernel!"
 
 DATE_END=$(date +"%s")
