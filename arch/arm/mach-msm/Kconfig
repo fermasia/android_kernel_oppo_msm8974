@@ -3126,6 +3126,13 @@ config KRAIT_REGULATOR
 	 line from the PMIC. This supply line is powered by multiple
 	 regulators running in ganged mode inside the PMIC. Enable
 	 this option to support such configurations.
+	 
+config ALUCARD_HOTPLUG
+	bool "Enable alucard-hotplug cpu hotplug driver"
+	default n
+	help
+	  Generic Alucard-hotplug cpu hotplug driver for ARM SOCs
+
 endif
 
 config KERNEL_TEXT_MPU_PROT
