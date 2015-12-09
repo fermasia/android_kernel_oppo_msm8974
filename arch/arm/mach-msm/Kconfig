@@ -3144,7 +3144,6 @@ config KRAIT_REGULATOR
 	 regulators running in ganged mode inside the PMIC. Enable
 	 this option to support such configurations.
 
-
 config PVS_LEVEL_INTERFACE
 	bool "Expose PVS level information in sys fs (Boeffla-Kernel)"
 	help
@@ -3166,6 +3165,12 @@ config PVS_LEVEL_INTERFACE
 	help
 	 Allow PVS level to be shown in Boeffla-Config app
 	 
+config ALUCARD_HOTPLUG
+	bool "Enable alucard-hotplug cpu hotplug driver"
+	default n
+	help
+	  Generic Alucard-hotplug cpu hotplug driver for ARM SOCs
+
 endif
 
 config KERNEL_TEXT_MPU_PROT
