@@ -2777,7 +2777,6 @@ static void __update_cpu_load(struct rq *this_rq, unsigned long this_load,
 	sched_avg_update(this_rq);
 }
 
-#ifdef CONFIG_NO_HZ
 /*
  * There is no sane way to deal with nohz on smp when using jiffies because the
  * cpu doing the jiffies update might drift wrt the cpu doing the jiffy reading
@@ -2837,7 +2836,6 @@ void update_cpu_load_nohz(void)
 	}
 	raw_spin_unlock(&this_rq->lock);
 }
-#endif /* CONFIG_NO_HZ */
 
 /*
  * Called from scheduler_tick()
