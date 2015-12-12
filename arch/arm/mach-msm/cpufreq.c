@@ -573,6 +573,8 @@ const struct file_operations msm_cpufreq_fops = {
 	.release	= seq_release,
 };
 
+#endif
+
 static int __init msm_cpufreq_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
