@@ -60,14 +60,6 @@ int charge_level = 0;			// 0 = stock charge logic, not 0 = current to set
 char charge_info_text[30] = "No charger";
 #endif
 
-#ifdef CONFIG_VENDOR_EDIT
-/* zuoyonghua@oneplus.cn 2015-02-13 default close log */
-//#define DEBUG_QPNP_CHARGER
-#ifndef DEBUG_QPNP_CHARGER
-#ifdef pr_info
-#undef pr_info
-#define pr_info(fmt, ...) pr_debug(fmt, ##__VA_ARGS__)
-#endif
 #ifdef CONFIG_FORCE_FAST_CHARGE
 #include <linux/fastchg.h>
 #endif
@@ -7529,9 +7521,6 @@ static void charger_init_procfs(void)
 		pr_err("Failed to register proc interface\n");
 }
 
-
-#endif
-/* OPPO 2013-06-08 wangjc Add end */
 
 static int __devinit
 qpnp_charger_probe(struct spmi_device *spmi)
