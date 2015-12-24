@@ -44,7 +44,6 @@ struct hotplug_cpuinfo {
 
 static DEFINE_PER_CPU(struct hotplug_cpuinfo, od_hotplug_cpuinfo);
 
-static struct notifier_block notif;
 static struct delayed_work alucard_hotplug_work;
 static struct workqueue_struct *alucard_hp_wq;
 
