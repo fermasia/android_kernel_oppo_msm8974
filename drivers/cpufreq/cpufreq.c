@@ -2145,9 +2145,6 @@ no_policy:
 }
 EXPORT_SYMBOL(cpufreq_update_policy);
 
-
-static int __cpuinit cpufreq_cpu_callback(struct notifier_block *nfb,
-
 #ifdef CONFIG_MSM_LIMITER
 /*
  *	cpufreq_set_freq - set max/min freq for a cpu
@@ -2277,25 +2274,9 @@ skip:
 }
 EXPORT_SYMBOL(cpufreq_set_gov);
 
-/*
- *	cpufreq_get_gov - get governor for a cpu
- *	@cpu: CPU whose governor needs to be known
- */
-char *cpufreq_get_gov(unsigned int cpu)
-{
-	char *val = per_cpu(cpufreq_policy_save, cpu).gov;
-	struct cpufreq_policy *policy = __cpufreq_cpu_get(cpu, 1);
-
-	if (policy) {
-		val = policy->governor->name;
-		__cpufreq_cpu_put(policy, true);
-	}
-
-	return val;
-}
-EXPORT_SYMBOL(cpufreq_get_gov);
 #endif
 
+static int __cpuinit cpufreq_cpu_callback(struct notifier_block *nfb,
 					unsigned long action, void *hcpu)
 {
 	unsigned int cpu = (unsigned long)hcpu;
