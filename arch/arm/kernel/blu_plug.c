@@ -37,7 +37,6 @@
 #define DEF_PLUG_THRESHOLD 0
 #define BLU_PLUG_ENABLED	0
 
-static unsigned int up_threshold = UP_THRESHOLD;;
 static unsigned int blu_plug_enabled = BLU_PLUG_ENABLED;
 
 static unsigned int up_threshold = UP_THRESHOLD;
@@ -397,7 +396,7 @@ module_param_array(plug_threshold, uint, NULL, 0644);
 
 /***************** end of module parameters *****************/
 
-+static int dyn_hp_init(void)
+static int dyn_hp_init(void)
  {
 	if (!blu_plug_enabled) {
 		return 0;
