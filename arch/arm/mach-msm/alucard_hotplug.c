@@ -44,6 +44,7 @@ struct hotplug_cpuinfo {
 
 static DEFINE_PER_CPU(struct hotplug_cpuinfo, od_hotplug_cpuinfo);
 
+static struct notifier_block notif;
 static struct delayed_work alucard_hotplug_work;
 static struct workqueue_struct *alucard_hp_wq;
 
@@ -692,10 +693,10 @@ static int __init alucard_hotplug_init(void)
 		{652800, 1190400},
 		{652800, 0}
 #else
-		{0, 1497600},
-		{652800, 1190400},
-		{652800, 1190400},
-		{652800, 0}
+		{0, 1242000},
+		{810000, 1566000},
+		{918000, 1674000},
+		{1026000, 0}
 #endif
 	};
 	unsigned int hotplug_load[NR_CPUS][2] = {
