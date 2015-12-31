@@ -73,7 +73,7 @@ static struct hotplug_tuners {
 	.force_cpu_up = false,
 };
 
-#define DOWN_INDEX		(0)
+#define DOWN_INDEX		(1)
 #define UP_INDEX		(1)
 
 static void __ref hotplug_work_fn(struct work_struct *work)
