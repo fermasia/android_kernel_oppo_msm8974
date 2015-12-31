@@ -64,7 +64,7 @@ static struct mutex gov_lock;
 /* Hi speed to bump to from lo speed when load burst (default max) */
 static unsigned int hispeed_freq;
 /* Go to hi speed when CPU load at or above this value. */
-#define DEFAULT_GO_HISPEED_LOAD 94
+#define DEFAULT_GO_HISPEED_LOAD 95
 static unsigned long go_hispeed_load = DEFAULT_GO_HISPEED_LOAD;
 /*
 * The minimum amount of time to spend at a frequency before we can ramp down.
