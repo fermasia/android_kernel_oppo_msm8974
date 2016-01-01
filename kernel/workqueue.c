@@ -262,6 +262,13 @@ struct workqueue_struct {
 	char			name[];		/* I: workqueue name */
 };
 
+<<<<<<< HEAD
+=======
+/* see the comment above the definition of WQ_POWER_EFFICIENT */
+static bool wq_power_efficient = IS_ENABLED(CONFIG_WQ_POWER_EFFICIENT_DEFAULT);
+module_param_named(power_efficient, wq_power_efficient, bool, 0644);
+
+>>>>>>> 587eaf4... kernel/workqueue.c: remove ifdefs over wq_power_efficient
 struct workqueue_struct *system_wq __read_mostly;
 struct workqueue_struct *system_long_wq __read_mostly;
 struct workqueue_struct *system_nrt_wq __read_mostly;
