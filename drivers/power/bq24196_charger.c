@@ -47,7 +47,8 @@ struct bq24196_device_info {
 	struct i2c_client		*client;
 	struct task_struct		*feedwdt_task;
 	struct mutex			i2c_lock;
-
+	atomic_t suspended; //sjc1118
+	
 	/* 300ms delay is needed after bq27541 is powered up
 	 * and before any successful I2C transaction
 	 */
@@ -57,10 +58,19 @@ struct bq24196_device_info {
 struct bq24196_device_info *bq24196_di;
 struct i2c_client *bq24196_client;
 
+/* Ensure I2C bus is active for OTG */
+static bool suspended;
+static DECLARE_COMPLETION(resume_done);
+static DEFINE_MUTEX(resume_lock);
+
 static int bq24196_read_i2c(struct bq24196_device_info *di,u8 reg,u8 length,char *buf)
 {
 	struct i2c_client *client = di->client;
 	int retval;
+	
+	if (atomic_read(&di->suspended) == 1) //sjc1118
+		return -1;
+	
 	mutex_lock(&bq24196_di->i2c_lock);
 	retval = i2c_smbus_read_i2c_block_data(client,reg,length,&buf[0]);
 	mutex_unlock(&bq24196_di->i2c_lock);
@@ -73,6 +83,10 @@ static int bq24196_write_i2c(struct bq24196_device_info *di,u8 reg,u8 length,cha
 {
 	struct i2c_client *client = di->client;
 	int retval;
+	
+	if (atomic_read(&di->suspended) == 1) //sjc1118
+		return -1;
+	
 	mutex_lock(&bq24196_di->i2c_lock);
 	retval = i2c_smbus_write_i2c_block_data(client,reg,length,&buf[0]);
 	mutex_unlock(&bq24196_di->i2c_lock);
@@ -515,6 +529,7 @@ static int bq24196_probe(struct i2c_client *client, const struct i2c_device_id *
 	di->client = client;
 	bq24196_client = client;
 	bq24196_di = di;
+	atomic_set(&di->suspended, 0); //sjc1118
 	mutex_init(&di->i2c_lock);
 	bq24196_hw_config_init(di);
 	
@@ -551,6 +566,56 @@ static const struct i2c_device_id bq24196_id[] = {
 	{},
 };
 MODULE_DEVICE_TABLE(i2c, bq24196_id);
+
+static void bq24196_suspended(bool state)
+{
+	mutex_lock(&resume_lock);
+	suspended = state;
+	mutex_unlock(&resume_lock);
+
+	if (!suspended)
+		complete(&resume_done);
+}
+
+void bq24196_wait_for_resume(void)
+{
+	bool asleep;
+
+	mutex_lock(&resume_lock);
+	asleep = suspended;
+	mutex_unlock(&resume_lock);
+
+	if (asleep) {
+		INIT_COMPLETION(resume_done);
+		wait_for_completion_timeout(&resume_done,
+					msecs_to_jiffies(100));
+	}
+}
+
+static int bq24196_suspend(struct device *dev) //sjc1118
+{
+	struct bq24196_device_info *chip = dev_get_drvdata(dev);
+
+	bq24196_suspended(true);
+	atomic_set(&chip->suspended, 1);
+
+	return 0;
+}
+
+static int bq24196_resume(struct device *dev) //sjc1118
+{
+	struct bq24196_device_info *chip = dev_get_drvdata(dev);
+
+	atomic_set(&chip->suspended, 0);
+	bq24196_suspended(false);
+
+	return 0;
+}
+
+static const struct dev_pm_ops bq24196_pm_ops = { //sjc1118
+	.resume		= bq24196_resume,
+	.suspend		= bq24196_suspend,
+};
 
 static struct i2c_driver bq24196_charger_driver = {
 	.driver		= {
