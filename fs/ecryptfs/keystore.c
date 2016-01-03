@@ -1149,8 +1149,13 @@ decrypt_pki_encrypted_session_key(struct ecryptfs_auth_tok *auth_tok,
 	struct ecryptfs_msg_ctx *msg_ctx;
 	struct ecryptfs_message *msg = NULL;
 	char *auth_tok_sig;
+<<<<<<< HEAD
 	char *payload = NULL;
 	size_t payload_len;
+=======
+	char *payload;
+	size_t payload_len = 0;
+>>>>>>> 5cd2527... toolchain: gcc: squashed fixes related to optimized toolchain
 	int rc;
 
 	rc = ecryptfs_get_auth_tok_sig(&auth_tok_sig, auth_tok);

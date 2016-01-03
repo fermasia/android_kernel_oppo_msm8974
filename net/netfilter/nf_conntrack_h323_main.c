@@ -568,7 +568,11 @@ static int h245_help(struct sk_buff *skb, unsigned int protoff,
 	unsigned char *data = NULL;
 	int datalen = 0;
 	int dataoff = 0;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+	int ret;
+>>>>>>> 5cd2527... toolchain: gcc: squashed fixes related to optimized toolchain
 
 	/* Until there's been traffic both ways, don't look in packets. */
 	if (ctinfo != IP_CT_ESTABLISHED && ctinfo != IP_CT_ESTABLISHED_REPLY)
@@ -1120,7 +1124,11 @@ static int q931_help(struct sk_buff *skb, unsigned int protoff,
 	unsigned char *data = NULL;
 	int datalen = 0;
 	int dataoff = 0;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+	int ret;
+>>>>>>> 5cd2527... toolchain: gcc: squashed fixes related to optimized toolchain
 
 	/* Until there's been traffic both ways, don't look in packets. */
 	if (ctinfo != IP_CT_ESTABLISHED && ctinfo != IP_CT_ESTABLISHED_REPLY)

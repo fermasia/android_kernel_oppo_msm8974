@@ -1043,9 +1043,15 @@ int slim_xfer_msg(struct slim_controller *ctrl, struct slim_device *sbdev,
 			const u8 *wbuf, u8 len)
 {
 	DECLARE_COMPLETION_ONSTACK(complete);
+<<<<<<< HEAD
 	int ret = 0;
 	u16 sl = 0, cur = 0;
 	u16 ec = 0;
+=======
+	int ret;
+	u16 sl, cur;
+	u16 ec;
+>>>>>>> 5cd2527... toolchain: gcc: squashed fixes related to optimized toolchain
 	u8 tid = 0, mlen = 6;
 
 	ret = slim_ele_access_sanity(msg, mc, rbuf, wbuf, len);

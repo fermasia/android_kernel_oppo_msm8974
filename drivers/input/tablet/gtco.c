@@ -227,8 +227,13 @@ static void parse_hid_report_descriptor(struct gtco *device, char * report,
 	int   indent = 0;
 	char  indentstr[10] = "";
 
+<<<<<<< HEAD
         for (z=0; z<TAG_GLOB_MAX; z++)
             oldval[z]=0;
+=======
+	for (z=0; z<TAG_GLOB_MAX; z++)
+		oldval[z]=0;
+>>>>>>> 5cd2527... toolchain: gcc: squashed fixes related to optimized toolchain
 
 	dbg("======>>>>>>PARSE<<<<<<======");
 

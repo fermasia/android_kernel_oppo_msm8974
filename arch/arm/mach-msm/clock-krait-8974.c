@@ -594,11 +594,19 @@ static int clock_krait_8974_driver_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct clk *c;
+<<<<<<< HEAD
 	int speed = 0, pvs = 0, pvs_ver = 0, config_ver = 0, rows = 0, cpu = 0;
 	unsigned long *freq = 0, cur_rate, aux_rate = 0;
 	int *uv = 0, *ua = 0;
 	u32 *dscr = 0, vco_mask = 0, config_val = 0;
 	int ret = 0;
+=======
+	int speed, pvs, svs_pvs, pvs_ver, config_ver, rows, cpu, svs_row = 0;
+	unsigned long *freq = 0, *svs_freq = 0, cur_rate, aux_rate;
+	int *uv = 0, *ua = 0, *svs_uv = 0, *svs_ua = 0;
+	u32 *dscr = 0, vco_mask, config_val, svs_fmax;
+	int ret;
+>>>>>>> 5cd2527... toolchain: gcc: squashed fixes related to optimized toolchain
 
 	vdd_l2.regulator[0] = devm_regulator_get(dev, "l2-dig");
 	if (IS_ERR(vdd_l2.regulator[0])) {

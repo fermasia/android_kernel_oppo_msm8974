@@ -926,6 +926,12 @@ static int audit_filter_inode_name(struct task_struct *tsk,
 	struct list_head *list = &audit_inode_hash[h];
 	struct audit_entry *e;
 	enum audit_state state = 0;
+<<<<<<< HEAD
+=======
+
+	word = AUDIT_WORD(ctx->major);
+	bit  = AUDIT_BIT(ctx->major);
+>>>>>>> 5cd2527... toolchain: gcc: squashed fixes related to optimized toolchain
 
 	if (list_empty(list))
 		return 0;

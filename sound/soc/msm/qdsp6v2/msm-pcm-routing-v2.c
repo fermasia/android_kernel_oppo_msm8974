@@ -1241,7 +1241,11 @@ static int msm_routing_set_srs_trumedia_control_(struct snd_kcontrol *kcontrol,
 					__func__, i, i>>1);
 				break;
 			}
+<<<<<<< HEAD
                         if ((i < 1) && (i >= 0))
+=======
+			if ((i < 1) && (i >= 0))
+>>>>>>> 5cd2527... toolchain: gcc: squashed fixes related to optimized toolchain
 			pr_debug("SRS %s: param_index %d index %d val %d",
 				__func__, index, i,
 				msm_srs_trumedia_params[index].raw_params[i]);

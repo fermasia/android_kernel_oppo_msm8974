@@ -126,7 +126,11 @@ KBUILD_CFLAGS = $(subst -pg, , $(ORIG_CFLAGS))
 endif
 
 ccflags-y := -fpic -fno-builtin -I$(obj)
+<<<<<<< HEAD
 asflags-y := -Wa,-march=all
+=======
+asflags-y := -Wa,-march=armv7-a
+>>>>>>> 5cd2527... toolchain: gcc: squashed fixes related to optimized toolchain
 
 # Supply kernel BSS size to the decompressor via a linker symbol.
 KBSS_SZ = $(shell $(CROSS_COMPILE)size $(obj)/../../../../vmlinux | \

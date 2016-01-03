@@ -3214,7 +3214,11 @@ int cgroupstats_build(struct cgroupstats *stats, struct dentry *dentry)
 	struct cgroup *cgrp;
 	struct cgroup_iter it;
 	struct task_struct *tsk;
+<<<<<<< HEAD
        it.task = NULL;
+=======
+        it.task = NULL;
+>>>>>>> 5cd2527... toolchain: gcc: squashed fixes related to optimized toolchain
 
 	/*
 	 * Validate dentry by checking the superblock operations,
